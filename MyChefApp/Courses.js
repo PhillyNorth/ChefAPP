@@ -1,32 +1,27 @@
-// CourseScreen.js
-import React, { useState } from 'react';
-import { View, Text, Button, StyleSheet, FlatList } from 'react-native';
-
-const sampleMenuItems = [
-  { id: '1', name: 'Spaghetti', course: 'Main', price: 12.99 },
-  { id: '2', name: 'Salad', course: 'Starter', price: 7.99 },
-];
+import React, { useState, useContext } from 'react';
+import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
+import { MenuContext } from '../context/MenuContext';
 
 export default function FilterScreen() {
+  const { menuItems } = useContext(MenuContext);
   const [filteredCourse, setFilteredCourse] = useState('All');
 
   const filteredItems = filteredCourse === 'All'
-    ? sampleMenuItems
-    : sampleMenuItems.filter(item => item.course === filteredCourse);
+    ? menuItems
+    : menuItems.filter(item => item.course === filteredCourse);
 
   return (
     <View style={styles.container}>
       <Button title="Show All" onPress={() => setFilteredCourse('All')} />
       <Button title="Show Starters" onPress={() => setFilteredCourse('Starter')} />
       <Button title="Show Mains" onPress={() => setFilteredCourse('Main')} />
+      <Button title="Show Desserts" onPress={() => setFilteredCourse('Dessert')} />
 
       <FlatList
         data={filteredItems}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text>{item.name} - {item.course} - ${item.price}</Text>
-          </View>
+          <Text>{item.dishName} - ${item.price}</Text>
         )}
       />
     </View>
@@ -37,10 +32,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-  },
-  item: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ccc',
   },
 });

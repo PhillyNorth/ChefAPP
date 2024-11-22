@@ -1,21 +1,20 @@
-//MenuScreen.js
+// screens/MenuScreen.js
 import React from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
 
-const sampleMenuItems = [
-  { id: '1', name: 'Spaghetti', course: 'Main', price: 12.99 },
-  { id: '2', name: 'Salad', course: 'Starter', price: 7.99 },
-];
+export default function MenuScreen({ route }) {
+  const { menuItems } = route.params;
 
-export default function MenuScreen() {
   return (
     <View style={styles.container}>
+      <Text style={styles.title}>Menu</Text>
       <FlatList
-        data={sampleMenuItems}
-        keyExtractor={item => item.id}
+        data={menuItems}
+        keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Text>{item.name} - {item.course} - ${item.price}</Text>
+            <Text>{item.name} - {item.course} - ${item.price.toFixed(2)}</Text>
+            <Text style={styles.description}>{item.description}</Text>
           </View>
         )}
       />
@@ -28,9 +27,18 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
   },
+  title: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 16,
+  },
   item: {
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
+  },
+  description: {
+    fontSize: 12,
+    color: '#777',
   },
 });

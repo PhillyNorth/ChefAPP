@@ -2,19 +2,23 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
-export default function AddMenuItemScreen({ navigation }) {
+export default function AddMenuItemScreen({ navigation, route }) {
+  const { menuItems, setMenuItems } = route.params;
+
   const [dishName, setDishName] = useState('');
   const [description, setDescription] = useState('');
   const [course, setCourse] = useState('');
   const [price, setPrice] = useState('');
 
   const addItem = () => {
-    console.log({
-      dishName,
+    const newItem = {
+      id: (menuItems.length + 1).toString(),
+      name: dishName,
       description,
       course,
-      price
-    });
+      price: parseFloat(price),
+    };
+    setMenuItems([...menuItems, newItem]);
     navigation.goBack();
   };
 
@@ -22,16 +26,17 @@ export default function AddMenuItemScreen({ navigation }) {
     <View style={styles.container}>
       <Text>Dish Name:</Text>
       <TextInput style={styles.input} value={dishName} onChangeText={setDishName} />
-      
       <Text>Description:</Text>
       <TextInput style={styles.input} value={description} onChangeText={setDescription} />
-      
       <Text>Course:</Text>
       <TextInput style={styles.input} value={course} onChangeText={setCourse} />
-      
       <Text>Price:</Text>
-      <TextInput style={styles.input} value={price} onChangeText={setPrice} keyboardType="numeric" />
-
+      <TextInput
+        style={styles.input}
+        value={price}
+        onChangeText={setPrice}
+        keyboardType="numeric"
+      />
       <Button title="Add Menu Item" onPress={addItem} />
     </View>
   );
